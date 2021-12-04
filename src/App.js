@@ -277,13 +277,13 @@ function App() {
         <Button onClick={() => buyFlys(mintAmount)}>Mint</Button>
         {/* <Button onClick={() => between(1, 998)}>Fetch</Button> */}
         <HStack>
-          <Button onClick={() => onOpen()}>Modal open</Button>
+          {/* <Button onClick={() => onOpen()}>Modal open</Button> */}
         </HStack>
 
         <Heading
           size="sm"
-          mt="8"
-          pt="10"
+          // mt="5"
+          pt="4"
         >{`${totalSupply} / ${totalNfts}`}</Heading>
       </VStack>
     </div>
