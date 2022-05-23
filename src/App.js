@@ -13,7 +13,6 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 import {
@@ -38,7 +37,8 @@ function App() {
   const [osLink, setOsLink] = useState("");
   const totalNfts = 8888;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const contractShowcase = "0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270";
+
+  // metamask related function
 
   const connectWallet = async () => {
     let provider = window.ethereum;
@@ -60,14 +60,11 @@ function App() {
   const disconnectWallet = () => {
     setEthAddress("");
     alert("disconnected");
-    // console.log("disconeccted");
   };
 
   const loadBlockchain = async () => {
     let provider = window.ethereum;
     const web3 = new Web3(provider);
-    // const network = await web3.eth.getChainId();
-    // console.log("chainID: " + network);
 
     const contract = new web3.eth.Contract(
       MintingContract.abi,
@@ -80,19 +77,20 @@ function App() {
     getSupply();
   });
 
+  //set nftShowcaseToggle to "true" to enable the showcase component (dev only)
+  const nftShowcaseToggle = false;
   useEffect(() => {
-    nftShowcase();
+    // uncomment nftShowcase() for nft showcase
+    // nftShowcase();
     connectWallet();
     loadBlockchain();
   }, [ethWindow]);
 
+  // minting function
+
   const buyFlys = (number) => {
     if (contract !== undefined && ethAddress !== "") {
-      // console.log(number);
-
       var value = number * 20000000;
-      // console.log(value);
-      // console.log(ethAddress);
 
       contract.methods
         .buyFlys(number)
@@ -109,13 +107,14 @@ function App() {
           console.log(osLink);
           onOpen();
           getSupply();
-          // between(1, 998);
         })
         .catch((err) => {
           console.log(err);
         });
     }
   };
+
+  // getting total nft supply function
 
   const getSupply = () => {
     if (contract !== undefined && ethAddress !== "") {
@@ -143,7 +142,7 @@ function App() {
 
   const incrementMintAmount = () => {
     const maxMintAmount = 20;
-    // ^^^^^^^ max mint per transaction/mint amount
+    // max mint per transaction/mint amount
     let newMintAmount = mintAmount + 1;
     if (newMintAmount > maxMintAmount) {
       newMintAmount = maxMintAmount;
@@ -152,14 +151,11 @@ function App() {
     console.log(mintAmount); // logs mint amount
   };
 
-  // const tokenID = 998;
-
-  function nftShowcase() {
-    // console.log(" fetched art ");
-    // Enable for pictures
-    // between(1, 998);
-    // setTimeout(nftShowcase, 5000);
-  }
+  // uncomment this function if you want to enable showcasing nfts from a selected NFT collection (using fidenza as an example here)
+  // function nftShowcase() {
+  //   between(1, 998);
+  //   setTimeout(nftShowcase, 5000);
+  // }
 
   function between(min, max) {
     const tokenGen = Math.floor(Math.random() * (max - min + 1) + min);
@@ -173,21 +169,10 @@ function App() {
 
     // console.log(tokenGen);
     console.log(tokenID);
-    // if
     setNftUrl("https://media.artblocks.io/78000" + tokenID + ".png");
-    // setNftUrl("https://media.artblocks.io/78000" + tokenGen + ".png");
 
     return;
   }
-
-  useEffect(() => {
-    // nftShowcase();
-    // between(1, 998);
-  });
-
-  // Example:
-  // const randomNumberID = between(1, 998);
-  // console.log(randomNumberID);
 
   return (
     <div>
@@ -195,17 +180,20 @@ function App() {
         connectWallet={connectWallet}
         disconnectWallet={disconnectWallet}
         ethAddress={ethAddress}
-        // style={{ backgroundColor: "red" }}
       />
       <Center>
-        <Image
-          pt="50px"
-          align="center"
-          boxSize="25%"
-          src={nftUrl}
-          alt="Placeholder image"
-          fallbackSrc="https://via.placeholder.com/2000x2400"
-        />
+        {nftShowcaseToggle ? (
+          <Image
+            pt="50px"
+            align="center"
+            boxSize="25%"
+            src={nftUrl}
+            alt="Placeholder image"
+            fallbackSrc="https://via.placeholder.com/2000x2400"
+          />
+        ) : (
+          ""
+        )}
       </Center>
       <>
         <Modal
@@ -213,7 +201,6 @@ function App() {
           blockScrollOnMount={false}
           isOpen={isOpen}
           onClose={onClose}
-          // isCentered="true"
         >
           <ModalOverlay />
           <ModalContent>
@@ -273,12 +260,8 @@ function App() {
         </Button>
       </HStack>
       <VStack justifyContent="center" mt="02%">
-        {/* <Button onClick={() => getSupply()}>refreshSupply</Button> */}
         <Button onClick={() => buyFlys(mintAmount)}>Mint</Button>
-        {/* <Button onClick={() => between(1, 998)}>Fetch</Button> */}
-        <HStack>
-          {/* <Button onClick={() => onOpen()}>Modal open</Button> */}
-        </HStack>
+        <HStack></HStack>
 
         <Heading
           size="sm"
