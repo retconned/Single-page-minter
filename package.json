@@ -1,7 +1,12 @@
 {
-  "name": "web3-penguin",
+  "name": "single-page-minter",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "author": {
+    "name": "retconned",
+    "email": "retcnned@gmail.com",
+    "twitter": "@retconned_"
+  },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.2",
